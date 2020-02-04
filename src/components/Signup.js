@@ -165,7 +165,7 @@ export default class SignUp extends Component {
   handleSignup = (e) => {
     const { history } = this.props
     e.preventDefault();
-    const url = "http://localhost:4000/user/signup"
+    const url = "https://newtestnode.herokuapp.com/user/signup"
     const { phoneNumber, email, password, address, dob, answer1, answer2, answer3, files, question1: { value: question1 },  question2: { value: question2 }, question3: { value: question3 } } = this.state;
     const data = { email, password, dob, phoneNumber, answer1, answer2, answer3, address, files, question1, question2, question3 };
     const emailValidation = this.validateEmail(email)

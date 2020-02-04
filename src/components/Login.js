@@ -13,6 +13,14 @@ export default class Login extends Component {
     }
   }
 
+  componentDidMount() {
+    const {history} = this.props
+    const token = localStorage.getItem("token")
+    if(token !== null) {
+      history.push('/home')
+    }
+  }
+
   validateEmail = email => {
     let error
     if (!email) {
@@ -41,7 +49,7 @@ export default class Login extends Component {
   handleSignin = (e) => {
     e.preventDefault();
     const { history } = this.props;
-    const url = "http://localhost:4000/user/login"
+    const url = "https://newtestnode.herokuapp.com/user/login"
     const { email, password } = this.state;
     const emailValidation = this.validateEmail(email)
     const passwordValidation = this.validatePassword(password)
@@ -55,7 +63,6 @@ export default class Login extends Component {
     )
       .then((response) => {
         if (response.status === 200) {
-          console.log(response, 'login res');
           const { email } = response.data;
           const { token } = response.data;
           const { id } = response.data
@@ -102,7 +109,7 @@ export default class Login extends Component {
         <button
           type="submit"
           className="btn btn-primary btn-block">Submit</button>
-        <Link className="nav-link" to={"/sign-up"}>New user? Signup</Link>
+        <Link className="nav-link" to={"/sign-up"}>New user? Register</Link>
       </form>
     );
   }

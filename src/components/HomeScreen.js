@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import axios from "axios";
 import Footer from './Footer/Footer'
 import NavBar from './NavBar'
-import { Redirect } from 'react-router-dom';
 
 class HomeScreen extends Component {
   constructor() {
     super();
     this.state = {
-      data: {},
-      token: ''
+      data: [],
+      token: null
     }
   }
 
@@ -20,8 +19,7 @@ class HomeScreen extends Component {
       token
     })
 
-
-    axios.get(`http://localhost:4000/user/getUser/${email}`)
+    axios.get(`https://newtestnode.herokuapp.com/user/getUser/${email}`)
       .then((response) => {
         const data = response.data.user
         this.setState({
@@ -37,15 +35,12 @@ class HomeScreen extends Component {
       <div>
         <NavBar data={this.state.data} propsData={this.props} />
         <div className="user-details mt-3">
-          {!this.state.token &&
-            <div>
-              <p>Please Sign in to view the home screen</p>
-            </div>
-          }
-          <h3 className="m-0">User Details</h3>
-          <img src={this.state.data.files} width={100} height={100} />
-          <p className="mb-0">User Contact:{this.state.data.phoneNumber}</p>
-          <p className="mb-0">User Email:{this.state.data.email}</p>
+          <h3 className="m-0"> <u>User Details</u></h3>
+          <div style={{ marginTop: 25 }}>
+            <img src={this.state.data.files} width={100} height={100} alt='' />
+            <p className="mb-0">User Contact: {this.state.data.phoneNumber}</p>
+            <p className="mb-0">User Email: {this.state.data.email}</p>
+          </div>
         </div>
         <Footer />
       </div>

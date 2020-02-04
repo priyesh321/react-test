@@ -32,15 +32,15 @@ class NavBar extends Component {
           </ul>
           <div className="dropdown header-dropdown">
             <a className="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Profile
+              Account
               </a>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
               <Link className="nav-link" to={"/edit"}>Edit</Link>
               <Link className="nav-link" to={"/change-password"}>Change Password</Link>
-              <div class="dropdown-divider"></div>
+              <div className="dropdown-divider"></div>
               <p style={{color:'#1C8EF9 ', marginLeft:17}} onClick={(e) => this.signOut()} >Logout</p>
              
-              {/* <Link className="nav-link" to={"/sign-in"}>Signout</Link> */}
+             
             </div>
           </div>
         </div>

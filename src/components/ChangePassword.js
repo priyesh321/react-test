@@ -8,7 +8,7 @@ class ChangePassword extends Component {
     this.state = {
       currentPassword: '',
       newPassword: '',
-      token:''
+      token: null
     }
   }
 
@@ -20,9 +20,7 @@ class ChangePassword extends Component {
       userId: id,
       token
     })
-
-
-    axios.get(`http://localhost:4000/user/getUser/${email}`)
+    axios.get(`https://newtestnode.herokuapp.com/user/getUser/${email}`)
       .then((response) => {
         const data = response.data.user
         this.setState({
@@ -35,14 +33,9 @@ class ChangePassword extends Component {
 
   handleChange = (e) => {
     e.preventDefault();
-    console.log(this.props,'-props');
-    
     const id = this.state.userId
     const { history } = this.props;
-    console.log(history, '------------');
-
-    e.preventDefault();
-    const url = `http://localhost:4000/user/reset-password/${id}`
+    const url = `https://newtestnode.herokuapp.com/user/reset-password/${id}`
     const { currentPassword, newPassword } = this.state;
     const data = { currentPassword, newPassword, };
 
@@ -50,7 +43,6 @@ class ChangePassword extends Component {
       data
     )
       .then((response) => {
-
         if (response.status === 200) {
           alert("Password Changed sucessfully")
           history.push('/home');
@@ -67,25 +59,25 @@ class ChangePassword extends Component {
           <h3>Change Password</h3>
 
           <div className="form-group">
-            <label>Current Pasword</label>
+            <label>Old Pasword</label>
             <input
               type="password"
               onChange={(e) => this.setState({ currentPassword: e.target.value })}
               className="form-control"
-              placeholder="Enter Current Pasword"
+              placeholder="Enter old pasword"
             />
-
           </div>
+
           <div className="form-group">
-            <label>New Password </label>
+            <label>New Password</label>
             <input
               type="password"
               onChange={(e) => this.setState({ newPassword: e.target.value })}
               className="form-control"
-              placeholder="Enter New Pasword"
+              placeholder="Enter new pasword"
             />
-
           </div>
+
           <button
             type="submit"
             className="btn btn-primary btn-block">Submit</button>

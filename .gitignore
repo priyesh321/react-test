@@ -2,7 +2,7 @@
 
 # dependencies
 /node_modules
-/nodenew/node_modules
+/nodenew
 
 # testing
 /coverage

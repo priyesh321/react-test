@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import Select from "react-select";
 import FileBase64 from 'react-file-base64';
 import axios from "axios";
@@ -8,8 +7,7 @@ export default class EditProfile extends Component {
   constructor() {
     super();
     this.state = {
-      userId: '',
-      fields: {},
+      userId: null,
       data: {},
       emailValidation: '',
       passwordValidation: '',
@@ -17,8 +15,7 @@ export default class EditProfile extends Component {
       addressValidation: '',
       phoneValidation: '',
       imageValidation: '',
-      errors: {},
-      files: [],
+      files: '',
       phoneNumber: '',
       email: '',
       address: '',
@@ -75,22 +72,19 @@ export default class EditProfile extends Component {
     this.setState({
       userId: id
     })
-
-
     axios.get(`http://localhost:4000/user/getUser/${email}`)
       .then((response) => {
         const data = response.data.user
         this.setState({
-          phoneNumber:data.phoneNumber,
-          address:data.address,
-          files:data.files,
-          dob:data.dob,
+          phoneNumber: data.phoneNumber,
+          address: data.address,
+          files: data.files,
+          dob: data.dob,
           data
         })
       }, (error) => {
         console.log(error);
       });
-
   }
 
   getFiles(files) {
@@ -187,29 +181,24 @@ export default class EditProfile extends Component {
   }
 
   handleEdit = (e) => {
-    const id = this.state.userId
     e.preventDefault();
-    const url = `http://localhost:4000/user/updateUser/${id}`
-    const { phoneNumber,  address, dob,  files } = this.state;
-    const data = {  dob, phoneNumber, address, files };
-    console.log(data, 'data');
-
-    
+    const { history } = this.props
+    const id = this.state.userId
+    const url = `https://newtestnode.herokuapp.com/user/updateUser/${id}`
+    const { phoneNumber, address, dob, files } = this.state;
+    const data = { dob, phoneNumber, address, files };
     const dobValidation = this.validateDob(dob)
     const addressValidation = this.validateAddress(address)
     const phoneValidation = this.validatePhone(phoneNumber)
     this.setState({
-  
       dobValidation,
       addressValidation,
       phoneValidation,
     })
-
     axios.put(url,
       data
     )
       .then((response) => {
-
         if (response.status === 200) {
           alert("updated sucessfully")
           history.push('/home');
@@ -224,11 +213,9 @@ export default class EditProfile extends Component {
 
   render() {
     const data = this.state.data
-    console.log(data,'data');
-    
     return (
       <div>
-        {<form className="signin-form" method="post" onSubmit={this.handleEdit}>
+        <form className="signin-form" method="post" onSubmit={this.handleEdit}>
           <div className="form-group">
             <label>Phone Number</label>
             <input
@@ -253,7 +240,6 @@ export default class EditProfile extends Component {
             <p style={{ color: 'red' }}>{this.state.addressValidation}</p>
           </div>
 
-
           <div className="form-group">
             <label>Date of birth</label>
             <input
@@ -267,7 +253,6 @@ export default class EditProfile extends Component {
 
           <div className="form-group">
             <label>Security Question</label>
-
             <Select
               name="filters"
               placeholder={data.question1}
@@ -283,6 +268,9 @@ export default class EditProfile extends Component {
               className="form-control"
               placeholder="Answer #1"
             />
+
+            <br />
+
             <Select
               name="filters"
               defaultValue={data.question2}
@@ -298,6 +286,9 @@ export default class EditProfile extends Component {
               className="form-control"
               placeholder="Answer #2"
             />
+
+            <br />
+
             <Select
               name="filters"
               placeholder={data.question3}
@@ -312,22 +303,20 @@ export default class EditProfile extends Component {
               defaultValue={data.answer3}
               className="form-control"
               placeholder="Answer #3" />
+
+            <br />
+
             <FileBase64
               multiple={true}
-              defaultValue={data.files}
-              onDone={this.getFiles.bind(this)} />
+              defaultValue={this.state.files}
+              onDone={this.getFiles.bind(this)}
+            />
             <p style={{ color: 'red' }}>{this.state.imageValidation}</p>
           </div>
 
           <button type="submit" className="btn btn-primary btn-block">Save</button>
-
-
         </form>
-        }
-
-
       </div>
-
     );
   }
 }
